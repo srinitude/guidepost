@@ -47,4 +47,4 @@ And then execute:
 
 ## Contact
 
-If you find and want to address any secutity issues with the project, email [Kiren Srinivasan](mailto:kiren.srinivasan@holbertonschool.com)! For anything else, feel free to file a Github issue or tweet us [@holbertonschool](https://twitter.com/holbertonschool).
+If you find and want to address any security issues with the project, email [Kiren Srinivasan](mailto:kiren.srinivasan@holbertonschool.com)! For anything else, feel free to file a Github issue or tweet us [@holbertonschool](https://twitter.com/holbertonschool).
