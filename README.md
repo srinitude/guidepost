@@ -24,6 +24,12 @@ Your knowledge base is a hugely important component of your company! The purpose
 
 If you're looking to use this gem, but work with providers like Freshdesk, Zoho, and Confluence, feel free to reach out!
 
+### Storage Services
+
+* Amazon Simple Storage Service (Amazon S3)
+
+If you're looking to use this gem, but work with other storage services like Google Cloud Storage, feel free to reach out!
+
 ### Installation
 
 Add this line to your application's Gemfile:
@@ -36,7 +42,7 @@ And then execute:
 
     $ bundle
 
-Make sure to have certain environmental variables set, preferrably in your .bash_profile or in your .bashrc! The prefix of each environment variable needs to be the uppercased-version of the name of your project that you will use to initialize your Guidepost Provider:
+Make sure to have certain environmental variables set, preferrably in your .bash_profile or in your .bashrc! The prefix of each environment variable needs to be the uppercased-version of the name of your project that you will use to initialize your Guidepost Provider (i.e. Zendesk in this case, since this is the only provider currently supported):
 
 #### Zendesk
 
