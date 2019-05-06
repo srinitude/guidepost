@@ -36,6 +36,31 @@ And then execute:
 
     $ bundle
 
+Make sure to have certain environmental variables set, preferrably in your .bash_profile or in your .bashrc! The prefix of each environment variable needs to be the uppercased-version of the name of your project that you will use to initialize your Guidepost Provider:
+
+#### Zendesk
+
+```ruby
+# The email associated with your Zendesk subdomain
+ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_ZENDESK_EMAIL"]
+
+# The password token associated with your Zendesk subdomain
+ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_PASSWORD_TOKEN"]
+```
+
+#### S3
+
+```ruby
+# The access key associated with your AWS account
+ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_AWS_ACCESS_KEY_ID"]
+
+# The secret key associated with your AWS account
+ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_AWS_SECRET_ACCESS_KEY"]
+
+# The name of the S3 bucket you want to upload your backups to
+ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_S3_BUCKET_NAME"]
+```
+
 ### Current Use Cases
 
 * Back up your knowledge base to S3
@@ -43,7 +68,13 @@ And then execute:
 
 #### Back up your knowledge base to S3
 
-#### Integrate your knowledge base into your database
+```ruby
+subdomain = "example"
+project_name = "example"
+
+zendesk = Guidepost::Provider::Zendesk.new(subdomain: subdomain, project_name: project_name)
+zendesk.backup_all_articles
+```
 
 ## Contact
 
