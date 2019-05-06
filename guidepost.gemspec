@@ -8,4 +8,6 @@ Gem::Specification.new do |s|
     s.files                 = Dir["lib/**/*", "README.md"]
     s.require_paths         = ["lib"]
     s.required_ruby_version = '>= 2.5.0'
+
+    s.add_dependency("aws-sdk", "~> 2.0")
 end
