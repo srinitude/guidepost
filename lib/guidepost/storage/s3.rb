@@ -1,21 +1,29 @@
 module Guidepost
     module Storage
         class S3
-            def initialize
+            attr_accessor :project_name
+            
+            def initialize(options={})
+                @project_name = options[:project_name]
+
+                raise "Guidepost::Storage::S3 initializer is missing a project_name" if @project_name.nil?
+
+                @project_name.upcase!
+
                 @s3_client = Aws::S3::Resource.new(
-                    credentials: Aws::Credentials.new(ENV['GUIDEPOST_AWS_ACCESS_KEY_ID'], ENV['GUIDEPOST_AWS_SECRET_ACCESS_KEY']),
-                    region: ENV['GUIDEPOST_AWS_REGION'] || 'us-east-1'
+                    credentials: Aws::Credentials.new(ENV["#{@project_name}_GUIDEPOST_AWS_ACCESS_KEY_ID"], ENV["#{@project_name}_GUIDEPOST_AWS_SECRET_ACCESS_KEY"]),
+                    region: ENV["#{@project_name}_GUIDEPOST_AWS_REGION"] || "us-east-1"
                 )
             end
 
-            def upload_guides(options={})
+            def upload_file(options={})
                 path = options.fetch(:path, nil)
                 string_content = options.fetch(:string_content, "")
                 acl = options.fetch(:acl, "private")
                 metadata = options.fetch(:metadata, nil)
 
-                bucket_name = ENV['GUIDEPOST_S3_BUCKET_NAME']
-                storage_class = ENV['GUIDEPOST_S3_STORAGE_CLASS'] || "STANDARD_IA"
+                bucket_name = ENV["#{self.project_name}_GUIDEPOST_S3_BUCKET_NAME"]
+                storage_class = ENV["#{self.project_name}_GUIDEPOST_S3_STORAGE_CLASS"] || "STANDARD_IA"
 
                 return false if path.nil?
                 begin

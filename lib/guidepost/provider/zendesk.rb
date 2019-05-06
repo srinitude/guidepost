@@ -2,13 +2,19 @@ module Guidepost
     module Provider
         class Zendesk
             attr_accessor :subdomain
+            attr_accessor :project_name
 
             def initialize(options={})
                 @subdomain = options[:subdomain]
-                @storage = options[:storage] || Guidepost::Storage::S3.new
+                @project_name = options[:project_name]
 
-                @email = "#{ENV["GUIDEPOST_ZENDESK_EMAIL"]}/token"
-                @password = ENV["GUIDEPOST_ZENDESK_PASSWORD_TOKEN"]
+                raise "Guidepost::Provider::Zendesk initializer is missing either a subdomain or project_name" if @subdomain.nil? || @project_name.nil?
+
+                @project_name.upcase!
+                @storage = options[:storage] || Guidepost::Storage::S3.new(project_name: @project_name)
+
+                @email = "#{ENV["#{@project_name}_GUIDEPOST_ZENDESK_EMAIL"]}/token"
+                @password = ENV["#{@project_name}_GUIDEPOST_ZENDESK_PASSWORD_TOKEN"]
             end
 
             def backup_all_articles
@@ -17,7 +23,7 @@ module Guidepost
         
                 # Upload to S3
                 timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-                @storage.upload_guides("zendesk/article_backups/#{timestamp}.json", articles.to_json)
+                @storage.upload_file(path: "zendesk/article_backups/#{timestamp}.json", string_content: articles.to_json)
         
                 articles.count
             end
@@ -35,7 +41,7 @@ module Guidepost
             end
         
             def retrieve_articles(url)
-                url = "#{self.base_api_url}/help_center/articles.json?include=users,sections,categories,translations&per_page=25&page=1" if url.nil?
+                url = "#{self.base_api_url}/help_center/articles.json?include=translations&per_page=25&page=1" if url.nil?
                 
                 uri = URI.parse(url)
         
