@@ -5,44 +5,38 @@ module Guidepost
 
             def initialize(options={})
                 @subdomain = options[:subdomain]
-                @s3 = options[:s3] || Guidepost::Storage::S3.new
+                @storage = options[:storage] || Guidepost::Storage::S3.new
 
                 @email = "#{ENV["GUIDEPOST_ZENDESK_EMAIL"]}/token"
                 @password = ENV["GUIDEPOST_ZENDESK_PASSWORD_TOKEN"]
             end
 
             def backup_all_articles
-                page = 1
+                # Get all articles (with pagination)
+                articles = self.retrieve_all_articles
+        
+                # Upload to S3
+                timestamp = Time.now.strftime('%Y%m%d%H%M%S')
+                @storage.upload_guides("zendesk/article_backups/#{timestamp}.json", articles.to_json)
+        
+                articles.count
+            end
+        
+            def retrieve_all_articles
+                articles = []
+                page_next = nil
                 while true
-                    page = backup_articles(from_page: page)
-                    break if page.nil?
+                    page_articles, page_next = self.retrieve_articles(page_next)
+                    break if page_articles.nil? || page_articles.empty?
+                    articles += page_articles
+                    break if page_next.nil?
                 end
+                articles
             end
-
-            def backup_articles(options={})
-                page = options[:from_page]
-                page = 1 if page.nil?
         
-                articles = retrieve_articles(from_page: page)
-        
-                timestamp = Time.now.strftime '%Y%m%d'
-                s3_api_service.upload_file("zendesk/article_backups/#{timestamp}/pages/page-#{articles[:page]}.json", articles[:body])
-        
-                body = JSON.parse(articles[:body])
+            def retrieve_articles(url)
+                url = "#{self.base_api_url}/help_center/articles.json?include=users,sections,categories,translations&per_page=25&page=1" if url.nil?
                 
-                return nil if body["next_page"].nil?
-        
-                query = URI.parse(body["next_page"]).query
-                query_params = CGI::parse(query)
-                
-                query_params["page"].first
-            end
-
-            def retrieve_articles(options={})
-                page = options[:from_page]
-                page = 1 if page.nil?
-        
-                url = "#{self.base_api_url}/help_center/articles.json?include=users,sections,categories,translations&per_page=100&page=#{page}"
                 uri = URI.parse(url)
         
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -55,10 +49,8 @@ module Guidepost
         
                 body = response.body.force_encoding("UTF-8")
         
-                {
-                    page: page,
-                    body: body
-                }
+                j_body = JSON.parse(body)
+                return j_body['articles'], j_body['next_page']
             end
 
             def base_api_url
