@@ -12,6 +12,7 @@ Your knowledge base is a hugely important component of your company! The purpose
 * [Installation](#installation)
 * [Current Use Cases](#current-use-cases)
 * [Contact](#contact)
+* [Roadmap](#roadmap)
 
 ### Prerequisites/Requirements
 
@@ -85,3 +86,8 @@ zendesk.backup_all_articles
 ## Contact
 
 If you find and want to address any security issues with the project, email [Kiren Srinivasan](mailto:srinitude@gmail.com.com)! For anything else, feel free to file a Github issue or tweet me [@srinitude](https://twitter.com/srinitude).
+
+## Roadmap
+
+* Tests
+* More robust documentation
