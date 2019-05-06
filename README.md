@@ -16,7 +16,7 @@ Your knowledge base is a hugely important component of your company! The purpose
 
 * Using Zendesk as your current knowledge base
 * Rails 5.2+
-* Ruby 2.6+
+* Ruby 2.5+
 
 ### Knowledge Base Providers
 
