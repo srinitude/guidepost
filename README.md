@@ -93,3 +93,4 @@ If you find and want to address any security issues with the project, email [Kir
 
 * Tests
 * More robust documentation
+* More relevant use cases
