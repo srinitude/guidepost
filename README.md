@@ -14,6 +14,7 @@ Your knowledge base is a hugely important component of your company! The purpose
 * [Current Use Cases](#current-use-cases)
 * [Contact](#contact)
 * [Roadmap](#roadmap)
+* [License](#license)
 
 ### Prerequisites/Requirements
 
@@ -94,3 +95,7 @@ If you find and want to address any security issues with the project, email [Kir
 * Tests
 * More robust documentation
 * More relevant use cases
+
+## License
+
+Guidepost is released under the [MIT License](LICENSE).

@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
     s.description           = "Harness your knowledge base in your Ruby applications"
     s.authors               = ["Kiren Srinivasan"]
     s.email                 = 'kiren.srinivasan@holbertonschool.com'
-    s.files                 = Dir["lib/**/*", "README.md"]
+    s.files                 = Dir["lib/**/*", "README.md", "LICENSE"]
     s.require_paths         = ["lib"]
     s.required_ruby_version = '>= 2.5.0'
 
