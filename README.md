@@ -7,7 +7,8 @@ Your knowledge base is a hugely important component of your company! The purpose
 ## Table of Contents
 
 * [Prerequisites/Requirements](#prerequisites-requirements)
-* [Knowledge Base Providers](#knowledge-base-providers)
+* [Current Knowledge Base Providers](#current-knowledge-base-providers)
+* [Current Storage Services](#current-storage-services)
 * [Installation](#installation)
 * [Current Use Cases](#current-use-cases)
 * [Contact](#contact)
@@ -18,13 +19,13 @@ Your knowledge base is a hugely important component of your company! The purpose
 * Rails 4.2+
 * Ruby 2.5+
 
-### Knowledge Base Providers
+### Current Knowledge Base Providers
 
 * Zendesk
 
 If you're looking to use this gem, but work with providers like Freshdesk, Zoho, and Confluence, feel free to reach out!
 
-### Storage Services
+### Current Storage Services
 
 * Amazon Simple Storage Service (Amazon S3)
 
@@ -83,4 +84,4 @@ zendesk.backup_all_articles
 
 ## Contact
 
-If you find and want to address any security issues with the project, email [Kiren Srinivasan](mailto:kiren.srinivasan@holbertonschool.com)! For anything else, feel free to file a Github issue or tweet us [@holbertonschool](https://twitter.com/holbertonschool).
+If you find and want to address any security issues with the project, email [Kiren Srinivasan](mailto:srinitude@gmail.com.com)! For anything else, feel free to file a Github issue or tweet me [@srinitude](https://twitter.com/srinitude).
