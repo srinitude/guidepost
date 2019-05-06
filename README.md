@@ -64,7 +64,6 @@ ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_S3_BUCKET_NAME"]
 ### Current Use Cases
 
 * Back up your knowledge base to S3
-* Integrate your knowledge base into your database
 
 #### Back up your knowledge base to S3
 
