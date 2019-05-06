@@ -10,6 +10,7 @@ Your knowledge base is a hugely important component of your company! The purpose
 * [Current Knowledge Base Providers](#current-knowledge-base-providers)
 * [Current Storage Services](#current-storage-services)
 * [Installation](#installation)
+* [Environment Variables](#environment-variables)
 * [Current Use Cases](#current-use-cases)
 * [Contact](#contact)
 * [Roadmap](#roadmap)
@@ -42,6 +43,8 @@ gem 'guidepost'
 And then execute:
 
     $ bundle
+
+### Environment Variables
 
 Make sure to have certain environmental variables set, preferrably in your `.bash_profile` or in your `.bashrc`! The prefix of each environment variable needs to be the uppercased version of the name of your project that you will use to initialize your `Guidepost::Provider` (i.e. Zendesk in this case, since this is the only provider currently supported):
 
