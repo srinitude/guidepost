@@ -12,7 +12,7 @@ module Guidepost
 
             def migrations
                 timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-                template "migrations.rb", "db/migrate/#{timestamp}_create_knowledge_base_guide_models"                
+                template "migrations.rb", "db/migrate/#{timestamp}_create_knowledge_base_guide_models.rb"                
             end
 
             def models
