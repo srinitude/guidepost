@@ -1,5 +1,7 @@
 # Guidepost
 
+[![Gem Version](https://badge.fury.io/rb/guidepost.svg)](https://badge.fury.io/rb/guidepost)
+
 ## Purpose
 
 Your knowledge base is a hugely important component of your company! The purpose of this project is to help you gain more control over it.
