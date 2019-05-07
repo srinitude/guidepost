@@ -3,7 +3,7 @@ require "rails/generators/base"
 module Guidepost
     module Generators
         
-        class Zendesk::ModelsGenerator < Rails::Generators::Base
+        class ModelsGenerator < Rails::Generators::Base
             def migrations
                 puts "Hello world"
             end
