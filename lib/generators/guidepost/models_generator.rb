@@ -2,10 +2,14 @@ require "rails/generators/base"
 
 module Guidepost
     module Generators
-        class ModelsGenerator < Rails::Generators::Base
-            def hello_world
-                puts "Hello world"
+        
+        module Zendesk
+            class ModelsGenerator < Rails::Generators::Base
+                def migrations
+                    puts "Hello world"
+                end
             end
         end
+
     end
 end
