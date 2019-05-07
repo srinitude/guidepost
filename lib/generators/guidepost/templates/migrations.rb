@@ -30,6 +30,27 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
             t.timestamp :section_updated_at
         end
 
+        create_table :zendesk_guide_user_segments do |t|
+            t.integer :user_segment_id
+            t.string :name
+            t.string :user_type
+            t.integer :group_ids, array: true, default: []
+            t.integer :organization_ids, array: true, default: []
+            t.string :tags, array: true, default: []
+            t.timestamp :user_segment_created_at
+            t.timestamp :user_segment_updated_at
+        end
+
+        create_table :zendesk_guide_permission_groups do |t|
+            t.integer :permission_group_id
+            t.string :name
+            t.integer :edit, array: true, default: []
+            t.integer :publish, array: true, default: []
+            t.timestamp :permission_group_created_at
+            t.timestamp :permission_group_updated_at
+            t.boolean :built_in
+        end
+
         create_table :zendesk_guide_articles do |t|
             t.integer :zendesk_guide_section_id
             t.integer :section_id
@@ -69,27 +90,6 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
             t.boolean :inline, default: false
             t.timestamp :article_attachment_created_at
             t.timestamp :article_attachment_updated_at
-        end
-
-        create_table :zendesk_guide_user_segments do |t|
-            t.integer :user_segment_id
-            t.string :name
-            t.string :user_type
-            t.integer :group_ids, array: true, default: []
-            t.integer :organization_ids, array: true, default: []
-            t.string :tags, array: true, default: []
-            t.timestamp :user_segment_created_at
-            t.timestamp :user_segment_updated_at
-        end
-
-        create_table :zendesk_guide_permission_groups do |t|
-            t.integer :permission_group_id
-            t.string :name
-            t.integer :edit, array: true, default: []
-            t.integer :publish, array: true, default: []
-            t.timestamp :permission_group_created_at
-            t.timestamp :permission_group_updated_at
-            t.boolean :built_in
         end
     end
 end
