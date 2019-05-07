@@ -1,6 +1,6 @@
-class CreateKnowledgeBaseGuideModels < ActiveRecord::Migration
+class CreateZendeskGuideModels < ActiveRecord::Migration
     def change
-        create_table :knowledge_base_guide_categories do |t|
+        create_table :zendesk_guide_categories do |t|
             t.integer :category_id
             t.string :name, null: false, default: "Holberton"
             t.string :description
@@ -14,7 +14,7 @@ class CreateKnowledgeBaseGuideModels < ActiveRecord::Migration
             t.timestamp :category_updated_at
         end
 
-        create_table :knowledge_base_guide_sections do |t|
+        create_table :zendesk_guide_sections do |t|
             t.integer :category_id
             t.integer :section_id
             t.string :name, null: false, default: "Holberton"
@@ -29,7 +29,7 @@ class CreateKnowledgeBaseGuideModels < ActiveRecord::Migration
             t.timestamp :section_updated_at
         end
 
-        create_table :knowledge_base_guide_articles do |t|
+        create_table :zendesk_guide_articles do |t|
             t.integer :section_id
             t.integer :article_id
             t.string :url
