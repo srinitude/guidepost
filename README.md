@@ -9,7 +9,7 @@ Your knowledge base is an incredibly important component of your company, provid
 ## Current Use Cases
 
 * [Back up your knowledge base to S3](#back-up-your-knowledge-base-to-s3)
-* [Import your knowledge base into your application](#import-your-knowloedge-base-into-your-application)
+* [Import your knowledge base into your application](#import-your-knowledge-base-into-your-application)
 
 ## Table of Contents
 
