@@ -1,8 +1,8 @@
 module Guidepost
     module Provider
         class Zendesk
-            attr_accessor :subdomain
-            attr_accessor :project_name
+            attr_reader :subdomain
+            attr_reader :project_name
 
             def initialize(options={})
                 @subdomain = options[:subdomain]

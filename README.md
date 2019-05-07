@@ -4,16 +4,21 @@
 
 ## Purpose
 
-Your knowledge base is a hugely important component of your company! The purpose of this project is to help you gain more control over it.
+Your knowledge base is an incredibly important component of your company, providing value to your customers, employees, and other stakeholders! The purpose of this project is to help you gain more control over it.
+
+## Current Use Cases
+
+* [Back up your knowledge base to S3](#back-up-your-knowledge-base-to-s3)
+* [Import your knowledge base into your application](#import-your-knowloedge-base-into-your-application)
 
 ## Table of Contents
 
 * [Prerequisites/Requirements](#prerequisites-requirements)
-* [Current Knowledge Base Providers](#current-knowledge-base-providers)
-* [Current Storage Services](#current-storage-services)
+* [Knowledge Base Providers](#knowledge-base-providers)
+* [Storage Services](#storage-services)
 * [Installation](#installation)
 * [Environment Variables](#environment-variables)
-* [Current Use Cases](#current-use-cases)
+* [Usage](#usage)
 * [Contact](#contact)
 * [Roadmap](#roadmap)
 * [License](#license)
@@ -23,17 +28,13 @@ Your knowledge base is a hugely important component of your company! The purpose
 * Rails 4.2+
 * Ruby 2.5+
 
-### Current Knowledge Base Providers
+### Knowledge Base Providers
 
 * Zendesk
 
-If you're looking to use this gem, but work with providers like Freshdesk, Zoho, and Confluence, feel free to reach out!
-
-### Current Storage Services
+### Storage Services
 
 * Amazon Simple Storage Service (Amazon S3)
-
-If you're looking to use this gem, but work with other storage services like Google Cloud Storage, feel free to reach out!
 
 ### Installation
 
@@ -74,23 +75,32 @@ ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_AWS_SECRET_ACCESS_KEY"]
 ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_S3_BUCKET_NAME"]
 ```
 
-### Current Use Cases
-
-* Back up your knowledge base to S3
+### Usage
 
 #### Back up your knowledge base to S3
 
 ```ruby
+# The subdomain of your Zendesk account
 subdomain = "example"
+
+# The name you want to give to your project (name your environment variables accordingly)
 project_name = "example"
 
 zendesk = Guidepost::Provider::Zendesk.new(subdomain: subdomain, project_name: project_name)
 zendesk.backup_all_articles
 ```
 
+#### Import your knowledge base into your application
+
+
+
+```ruby
+
+```
+
 ## Contact
 
-If you find and want to address any security issues with the project, email [me](mailto:srinitude@gmail.com.com)! For anything else, feel free to file a Github issue or tweet me [@srinitude](https://twitter.com/srinitude).
+If you find and want to address any security issues with the project, email [me](mailto:srinitude@gmail.com.com)! For anything else, like bug identifications or feature requests, feel free to file a Github issue or tweet me [@srinitude](https://twitter.com/srinitude).
 
 ## Roadmap
 

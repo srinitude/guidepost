@@ -1,7 +1,7 @@
 module Guidepost
     module Storage
         class S3
-            attr_accessor :project_name
+            attr_reader :project_name
             
             def initialize(options={})
                 @project_name = options[:project_name]
