@@ -81,7 +81,7 @@ module Guidepost
                             else
                                 category_urls[url] += 1
                             end
-                            categories << s if category_urls[url] == 1
+                            categories << c if category_urls[url] == 1
                         end
 
                         break if page_next.nil?
