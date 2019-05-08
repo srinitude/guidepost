@@ -45,6 +45,10 @@ module Guidepost
                 else
                     sections = []
                     categories = []
+
+                    section_urls = Set.new
+                    category_urls = Set.new
+
                     while true
                         page, page_next = self.retrieve_articles(url: page_next, sideload: true)
 
@@ -59,11 +63,20 @@ module Guidepost
                         break if no_more_articles && no_more_sections && no_more_categories
 
                         articles += articles_from_page
-                        sections += sections_from_page
-                        categories += categories_from_page
+
+                        sections_from_page.each do |s|
+                            section_urls << s["url"]
+                            sections << s if !section_urls.include?(s["url"])
+                        end
+
+                        categories_from_page.each do |s|
+                           categorie_urls << s["url"]
+                           categories << s if !section_urls.include?(s["url"])
+                        end
 
                         break if page_next.nil?
                     end
+                    
                     return { 
                         categories: categories, 
                         category_count: categories.count, 
