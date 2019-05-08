@@ -17,9 +17,10 @@ module Guidepost
                 @password = ENV["#{@project_name}_GUIDEPOST_ZENDESK_PASSWORD_TOKEN"]
             end
 
-            def backup_all_articles
+            def backup_all_articles(options={})
                 # Get all articles (with pagination)
-                articles = self.retrieve_all_articles
+                sideload = options[:sideload] || false
+                articles = self.retrieve_all_articles(sideload: sideload)
         
                 # Upload to S3
                 timestamp = Time.now.strftime('%Y%m%d%H%M%S')
@@ -28,20 +29,34 @@ module Guidepost
                 articles.count
             end
         
-            def retrieve_all_articles
-                articles = []
+            def retrieve_all_articles(options={})
+                sideload = options[:sideload] || false
                 page_next = nil
-                while true
-                    page_articles, page_next = self.retrieve_articles(page_next)
-                    break if page_articles.nil? || page_articles.empty?
-                    articles += page_articles
-                    break if page_next.nil?
+
+                if !sideload
+                    articles = []
+                    while true
+                        page_articles, page_next = self.retrieve_articles(url: page_next)
+                        break if page_articles.nil? || page_articles.empty?
+                        articles += page_articles
+                        break if page_next.nil?
+                    end
+                    return articles
+                else
+                    page, page_next = self.retrieve_articles(url: page_next, sideload: true)
+                    return page
                 end
-                articles
             end
         
-            def retrieve_articles(url)
-                url = "#{self.base_api_url}/help_center/articles.json?include=translations&per_page=25&page=1" if url.nil?
+            def retrieve_articles(options={})
+                url = options[:url]
+                sideload = options[:sideload] || false
+
+                if !sideload
+                    url = "#{self.base_api_url}/help_center/articles.json?include=translations&per_page=25&page=1" if url.nil?
+                else
+                    url = "#{self.base_api_url}/help_center/articles.json?include=sections,categories,translations&per_page=25&page=1" if url.nil?
+                end
                 
                 uri = URI.parse(url)
         
@@ -56,7 +71,12 @@ module Guidepost
                 body = response.body.force_encoding("UTF-8")
         
                 j_body = JSON.parse(body)
-                return j_body['articles'], j_body['next_page']
+
+                if !sideload
+                    return j_body['articles'], j_body['next_page']
+                else
+                    return j_body, j_body['next_page']
+                end
             end
 
             def base_api_url
