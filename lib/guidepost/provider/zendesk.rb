@@ -64,7 +64,14 @@ module Guidepost
 
                         break if page_next.nil?
                     end
-                    return { categories: categories, sections: sections, articles: articles }
+                    return { 
+                        categories: categories, 
+                        category_count: categories.count, 
+                        sections: sections, 
+                        section_count: sections.count, 
+                        articles: articles,
+                        article_count: articles.count
+                    }
                 end
             end
         
