@@ -2,7 +2,6 @@ require 'aws-sdk'
 require 'cgi'
 require 'json'
 require 'net/http'
-require 'set'
 
 module Guidepost
 

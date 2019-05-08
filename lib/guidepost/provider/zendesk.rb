@@ -46,8 +46,8 @@ module Guidepost
                     sections = []
                     categories = []
 
-                    section_urls = Set.new
-                    category_urls = Set.new
+                    section_urls = Hash.new
+                    category_urls = Hash.new
 
                     while true
                         page, page_next = self.retrieve_articles(url: page_next, sideload: true)
@@ -65,13 +65,23 @@ module Guidepost
                         articles += articles_from_page
 
                         sections_from_page.each do |s|
-                            section_urls << s["url"]
-                            sections << s if !section_urls.include?(s["url"])
+                            url = s["url"]
+                            if !section_urls.has_key?(url)
+                                section_urls[url] = 1
+                            else
+                                section_urls[url] += 1
+                            end
+                            sections << s if section_urls[url] == 1
                         end
 
                         categories_from_page.each do |c|
-                           category_urls << c["url"]
-                           categories << s if !category_urls.include?(c["url"])
+                            url = c["url"]
+                            if !category_urls.has_key?(url)
+                                category_urls[url] = 1
+                            else
+                                category_urls[url] += 1
+                            end
+                            categories << s if category_urls[url] == 1
                         end
 
                         break if page_next.nil?
