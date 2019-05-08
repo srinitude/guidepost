@@ -32,9 +32,9 @@ module Guidepost
             def retrieve_all_articles(options={})
                 sideload = options[:sideload] || false
                 page_next = nil
+                articles = []
 
                 if !sideload
-                    articles = []
                     while true
                         page_articles, page_next = self.retrieve_articles(url: page_next)
                         break if page_articles.nil? || page_articles.empty?
@@ -43,8 +43,28 @@ module Guidepost
                     end
                     return articles
                 else
-                    page, page_next = self.retrieve_articles(url: page_next, sideload: true)
-                    return page
+                    sections = []
+                    categories = []
+                    while true
+                        page, page_next = self.retrieve_articles(url: page_next, sideload: true)
+
+                        articles_from_page = page["articles"]
+                        sections_from_page = page["sections"]
+                        categories_from_page = page["categories"]
+
+                        no_more_articles = articles_from_page.nil? || articles_from_page.empty?
+                        no_more_sections = sections_from_page.nil? || sections_from_page.empty?
+                        no_more_categories = categories_from_page.nil? || categories_from_page.empty?
+
+                        break if no_more_articles && no_more_sections && no_more_categories
+
+                        articles += articles_from_page
+                        sections += sections_from_page
+                        categories += categories_from_page
+
+                        break if page_next.nil?
+                    end
+                    return { categories: categories, sections: sections, articles: articles }
                 end
             end
         
