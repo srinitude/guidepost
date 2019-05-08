@@ -71,7 +71,7 @@ module Guidepost
 
                         categories_from_page.each do |c|
                            category_urls << c["url"]
-                           categories << s if !section_urls.include?(c["url"])
+                           categories << s if !category_urls.include?(c["url"])
                         end
 
                         break if page_next.nil?
