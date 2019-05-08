@@ -69,14 +69,14 @@ module Guidepost
                             sections << s if !section_urls.include?(s["url"])
                         end
 
-                        categories_from_page.each do |s|
-                           categorie_urls << s["url"]
-                           categories << s if !section_urls.include?(s["url"])
+                        categories_from_page.each do |c|
+                           category_urls << c["url"]
+                           categories << s if !section_urls.include?(c["url"])
                         end
 
                         break if page_next.nil?
                     end
-                    
+
                     return { 
                         categories: categories, 
                         category_count: categories.count, 
