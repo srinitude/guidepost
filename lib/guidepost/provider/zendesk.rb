@@ -106,7 +106,7 @@ module Guidepost
                 sideload = options[:sideload] || false
 
                 if !sideload
-                    url = "#{self.base_api_url}/help_center/articles.json?include=&per_page=25&page=1" if url.nil?
+                    url = "#{self.base_api_url}/help_center/articles.json?per_page=25&page=1" if url.nil?
                 else
                     url = "#{self.base_api_url}/help_center/articles.json?include=sections,categories&per_page=25&page=1" if url.nil?
                 end
@@ -130,6 +130,112 @@ module Guidepost
                 else
                     return j_body, j_body['next_page']
                 end
+            end
+
+            def retrieve_all_user_segments(options={})
+                user_segments = []
+                next_page = nil
+
+                while true
+                    segments, next_page = self.retrieve_user_segments(url: next_page)
+                    break if segments.nil? || segments.empty?
+                    user_segments += segments
+                    break if next_page.nil?
+                end
+
+                user_segments
+            end
+
+            def retrieve_user_segments(options={})
+                url = options[:url]
+                url = "#{self.base_api_url}/help_center/user_segments.json?per_page=25&page=1" if url.nil?
+                uri = URI.parse(url)
+        
+                http = Net::HTTP.new(uri.host, uri.port)
+                http.use_ssl = true
+                http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        
+                request = Net::HTTP::Get.new(uri.request_uri)
+                request.basic_auth(@email, @password)
+                response = http.request(request)
+        
+                body = response.body.force_encoding("UTF-8")
+
+                j_body = JSON.parse(body)
+
+                return j_body["user_segments"], j_body['next_page']
+            end
+
+            def retrieve_all_permission_groups(options={})
+                permission_groups = []
+                next_page = nil
+
+                while true
+                    groups, next_page = self.retrieve_permission_groups(url: next_page)
+                    break if groups.nil? || groups.empty?
+                    permission_groups += groups
+                    break if next_page.nil?
+                end
+
+                permission_groups
+            end
+
+            def retrieve_permission_groups(options={})
+                url = options[:url]
+                url = "#{self.base_api_url}/guide/permission_groups.json?per_page=25&page=1" if url.nil?
+                uri = URI.parse(url)
+        
+                http = Net::HTTP.new(uri.host, uri.port)
+                http.use_ssl = true
+                http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        
+                request = Net::HTTP::Get.new(uri.request_uri)
+                request.basic_auth(@email, @password)
+                response = http.request(request)
+        
+                body = response.body.force_encoding("UTF-8")
+
+                j_body = JSON.parse(body)
+
+                return j_body["permission_groups"], j_body['next_page']
+            end
+
+            def retrieve_all_article_attachments(options={})
+                article_attachments = []
+                next_page = nil
+
+                articles = options[:articles]
+                articles.each do |article|
+                    while true
+                        attachments, next_page = self.retrieve_article_attachments(for_article: article)
+                        break if attachments.nil? || attachments.empty?
+                        article_attachments += attachments
+                        break if next_page.nil?
+                    end
+                end
+
+                article_attachments
+            end
+
+            def retrieve_article_attachments(options={})
+                article = options[:for_article]
+
+                url = "#{self.base_api_url}/help-center/articles/#{article["id"]}/attachments.json?per_page=25&page=1" if url.nil?
+                uri = URI.parse(url)
+        
+                http = Net::HTTP.new(uri.host, uri.port)
+                http.use_ssl = true
+                http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        
+                request = Net::HTTP::Get.new(uri.request_uri)
+                request.basic_auth(@email, @password)
+                response = http.request(request)
+        
+                body = response.body.force_encoding("UTF-8")
+
+                j_body = JSON.parse(body)
+
+                return j_body["article_attachments"], j_body["next_page"]
             end
 
             def base_api_url
