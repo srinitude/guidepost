@@ -103,9 +103,9 @@ module Guidepost
                 sideload = options[:sideload] || false
 
                 if !sideload
-                    url = "#{self.base_api_url}/help_center/articles.json?include=translations&per_page=25&page=1" if url.nil?
+                    url = "#{self.base_api_url}/help_center/articles.json?include=&per_page=25&page=1" if url.nil?
                 else
-                    url = "#{self.base_api_url}/help_center/articles.json?include=sections,categories,translations&per_page=25&page=1" if url.nil?
+                    url = "#{self.base_api_url}/help_center/articles.json?include=sections,categories&per_page=25&page=1" if url.nil?
                 end
                 
                 uri = URI.parse(url)

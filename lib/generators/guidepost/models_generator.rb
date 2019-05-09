@@ -12,7 +12,8 @@ module Guidepost
 
             def migrations
                 timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-                template "migrations.rb", "db/migrate/#{timestamp}_create_zendesk_guide_models.rb"                
+                template "migrations.rb", "db/migrate/#{timestamp}_create_zendesk_guide_models.rb"
+                template "data_migration.rake", "lib/tasks/zendesk_guide.rake"                
             end
 
             def models

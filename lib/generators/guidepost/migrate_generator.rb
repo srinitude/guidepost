@@ -15,12 +15,7 @@ module Guidepost
             end
 
             def data_migration
-                # Retrieve all categories
-                # Retrieve all user segments
-                # Retrieve all permission groups
-                # Retrieve all sections
-                # Retrieve all articles
-                # Retrieve all article attachments
+                `rake zendesk_guide:`
             end
         end
 
