@@ -24,7 +24,10 @@ module Guidepost
         
                 # Upload to S3
                 timestamp = Time.now.strftime('%Y%m%d%H%M%S')
-                @storage.upload_file(path: "zendesk/article_backups/#{timestamp}.json", string_content: articles.to_json)
+
+                filename = "#{timestamp}"
+                filename += "_with_sideload" if sideload
+                @storage.upload_file(path: "zendesk/article_backups/#{filename}.json", string_content: articles.to_json)
         
                 articles.count
             end
