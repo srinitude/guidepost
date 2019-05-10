@@ -1,7 +1,7 @@
 class CreateZendeskGuideModels < ActiveRecord::Migration
     def change
         create_table :zendesk_guide_categories do |t|
-            t.integer :category_id
+            t.integer :category_id, limit: 8
             t.string :name, null: false, default: "General"
             t.string :description
             t.string :locale, null: false, default: "en-us"
@@ -15,9 +15,9 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
         end
 
         create_table :zendesk_guide_sections do |t|
-            t.integer :zendesk_guide_category_id
-            t.integer :category_id
-            t.integer :section_id
+            t.integer :zendesk_guide_category_id,
+            t.integer :category_id, limit: 8
+            t.integer :section_id, limit: 8
             t.string :name, null: false, default: "General"
             t.string :description
             t.string :locale, null: false, default: "en-us"
@@ -31,7 +31,7 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
         end
 
         create_table :zendesk_guide_user_segments do |t|
-            t.integer :user_segment_id
+            t.integer :user_segment_id, limit: 8
             t.string :name
             t.string :user_type
             t.integer :group_ids, array: true, default: []
@@ -42,7 +42,7 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
         end
 
         create_table :zendesk_guide_permission_groups do |t|
-            t.integer :permission_group_id
+            t.integer :permission_group_id, limit: 8
             t.string :name
             t.integer :edit, array: true, default: []
             t.integer :publish, array: true, default: []
@@ -53,8 +53,8 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
 
         create_table :zendesk_guide_articles do |t|
             t.integer :zendesk_guide_section_id
-            t.integer :section_id
-            t.integer :article_id
+            t.integer :section_id, limit: 8
+            t.integer :article_id, limit: 8
             t.string :url
             t.string :html_url
             t.string :title, null: false, default: "FAQ"
@@ -81,8 +81,8 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
 
         create_table :zendesk_guide_article_attachments do |t|
             t.integer :zendesk_guide_article_id
-            t.integer :article_id
-            t.integer :article_attachment_id
+            t.integer :article_id, limit: 8
+            t.integer :article_attachment_id, limit: 8
             t.string :url
             t.string :file_name
             t.string :content_url
