@@ -231,6 +231,7 @@ module Guidepost
             end
 
             def retrieve_article_attachments(options={})
+                byebug
                 article = options[:for_article]
 
                 url = "#{self.base_api_url}/help-center/articles/#{article["id"]}/attachments.json?per_page=25&page=1" if url.nil?
