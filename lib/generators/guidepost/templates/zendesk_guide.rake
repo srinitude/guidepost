@@ -1,37 +1,30 @@
 namespace :zendesk_guide do
 
-    desc "Backup articles from knowledge base provider (i.e. Zendesk currently) [run from Rails console to instantiate your mailer object]"
-    task :backup_articles, [:subdomain, :project_name, :mailer] => :environment do |t, args|
+    desc "Backup articles from knowledge base provider (i.e. Zendesk currently) [customize this task if you want to add more functionality]"
+    task :backup_articles, [:subdomain, :project_name] => :environment do |t, args|
         begin
             subdomain = args[:subdomain]
             project_name = args[:project_name]
-            mailer = args[:mailer]
 
-            if subdomain.nil? || project_name.nil? || mailer.nil?
-                raise "Subdomain, project name, and/or mailer arguments are missing" if Rails.env.development?
-                mailer.error_notification("An error happened during rake zendesk_guide:backup_articles", e).deliver_now
-                return
+            if subdomain.nil? || project_name.nil?
+                raise "Subdomain and/or project_name arguments are missing" if Rails.env.development?
             end
             
             zendesk = Guidepost::Provider::Zendesk.new(subdomain: subdomain, project_name: project_name)
             zendesk.backup_all_articles(sideload: true)
         rescue => e
             raise e if Rails.env.development?
-            mailer.error_notification("An error happened during rake zendesk_guide:backup_articles", e).deliver_now
         end
     end
 
-    desc "Import guides and respective models into database [run from Rails console to instantiate your mailer object]"
-    task :import_guides_into_database, [:subdomain, :project_name, :mailer] => :environment do |t, args|
+    desc "Import guides and respective models into database [customize this task if you want to add more functionality]"
+    task :import_guides_into_database, [:subdomain, :project_name] => :environment do |t, args|
         begin
             subdomain = args[:subdomain]
             project_name = args[:project_name]
-            mailer = args[:mailer]
 
-            if subdomain.nil? || project_name.nil? || mailer.nil?
-                raise "Subdomain, project name, and/or mailer arguments are missing" if Rails.env.development?
-                mailer.error_notification("An error happened during rake zendesk_guide:backup_articles", e).deliver_now
-                return
+            if subdomain.nil? || project_name.nil?
+                raise "Subdomain and/or project_name arguments are missing" if Rails.env.development?
             end
 
             zendesk = Guidepost::Provider::Zendesk.new(subdomain: subdomain, project_name: project_name)
@@ -71,8 +64,7 @@ namespace :zendesk_guide do
             ZendeskGuideArticleAttachment.find_or_create_article_attachments(article_attachments: article_attachments, article_objects: article_objects)                
         rescue => e
             raise e if Rails.env.development?
-            mailer.error_notification("An error happened during rake zendesk_guide:import_guides_into_database", e).deliver_now
         end
     end
-    
+
 end
