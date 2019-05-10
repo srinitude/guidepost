@@ -36,6 +36,7 @@ module Guidepost
                 sideload = options[:sideload] || false
                 page_next = nil
                 articles = []
+                article_attachments = nil
 
                 if !sideload
                     while true
@@ -44,7 +45,15 @@ module Guidepost
                         articles += page_articles
                         break if page_next.nil?
                     end
-                    return articles
+
+                    article_attachments = self.retrieve_all_article_attachments(articles: articles)
+
+                    return {
+                        articles: articles,
+                        article_count: articles.count,
+                        article_attachments: article_attachments,
+                        article_attachment_count: article_attachments.count
+                    }
                 else
                     sections = []
                     categories = []
@@ -90,6 +99,8 @@ module Guidepost
                         break if page_next.nil?
                     end
 
+                    article_attachments = self.retrieve_all_article_attachments(articles: articles)
+
                     return { 
                         categories: categories, 
                         category_count: categories.count, 
@@ -97,6 +108,8 @@ module Guidepost
                         section_count: sections.count, 
                         articles: articles,
                         article_count: articles.count
+                        article_attachments: article_attachments,
+                        article_attachment_count: article_attachments.count
                     }
                 end
             end
