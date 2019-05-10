@@ -82,16 +82,22 @@ ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_S3_BUCKET_NAME"]
 
 #### Back up your knowledge base to S3
 
+##### Implement the backup functionality in your code
+
 ```ruby
 # The subdomain of your Zendesk account
-subdomain = "example"
+subdomain = "spotify"
 
 # The name you want to give to your project (name your environment variables accordingly)
-project_name = "example"
+project_name = "employee-portal"
 
 zendesk = Guidepost::Provider::Zendesk.new(subdomain: subdomain, project_name: project_name)
-zendesk.backup_all_articles
+zendesk.backup_all_articles(sideload: true)
 ```
+
+##### Run a script outside of your codebase
+
+    $ rake zendesk_guide:backup_articles[spotify,employee-portal]
 
 #### Import your knowledge base into your application
 
@@ -103,6 +109,10 @@ zendesk.backup_all_articles
 ##### Perform all of the schema migrations
 
     $ rails g guidepost:migrate
+
+##### Run a script outside of your codebase
+
+    $ rake zendesk_guide:import_guides_into_database[spotify,employee-portal]
 
 ## Contact
 
