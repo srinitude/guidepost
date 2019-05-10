@@ -13,10 +13,6 @@ module Guidepost
             def schema_migration
                 `rake db:migrate`             
             end
-
-            def data_migration
-                `rake zendesk_guide:import_guides_into_database`
-            end
         end
 
     end

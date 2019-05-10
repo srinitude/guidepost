@@ -93,10 +93,13 @@ zendesk.backup_all_articles
 #### Import your knowledge base into your application
 
 
+##### Generate all of the necessary model and migration files
 
-```ruby
+    $ rails g guidepost:models
 
-```
+##### Perform all of the schema migrations
+
+    $ rails g guidepost:migrate
 
 ## Contact
 
