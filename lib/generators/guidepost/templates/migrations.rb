@@ -15,7 +15,7 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
         end
 
         create_table :zendesk_guide_sections do |t|
-            t.integer :zendesk_guide_category_id,
+            t.integer :zendesk_guide_category_id
             t.integer :category_id, limit: 8
             t.integer :section_id, limit: 8
             t.string :name, null: false, default: "General"
