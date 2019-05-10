@@ -24,7 +24,7 @@ class ZendeskGuideSection < ActiveRecord::Base
 
             section_hash.symbolize_keys!
 
-            section = ZendeskGuideSection.where(section_hash).first
+            section = ZendeskGuideSection.where(section_id: section_hash[:section_id]).first
             section.update(section_hash) if !section.nil?
             section = ZendeskGuideSection.create(section_hash) if section.nil?
             

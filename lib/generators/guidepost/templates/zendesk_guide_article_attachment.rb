@@ -19,7 +19,7 @@ class ZendeskGuideArticleAttachment < ActiveRecord::Base
 
             article_attachment_hash.symbolize_keys!
 
-            article_attachment = ZendeskGuideArticleAttachment.where(article_attachment_hash).first
+            article_attachment = ZendeskGuideArticleAttachment.where(article_attachment_id: article_attachment_hash[:article_attachment_id]).first
             article_attachment.update(article_attachment_hash) if !article_attachment.nil?
             article_attachment = ZendeskGuideArticleAttachment.create(article_attachment_hash) if article_attachment.nil?
             

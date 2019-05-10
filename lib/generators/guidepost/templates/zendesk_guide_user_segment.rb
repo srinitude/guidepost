@@ -19,7 +19,7 @@ class ZendeskGuideUserSegment < ActiveRecord::Base
 
             user_segment_hash.symbolize_keys!
 
-            user_segment = ZendeskGuideUserSegment.where(user_segment_hash).first
+            user_segment = ZendeskGuideUserSegment.where(user_segment_id: user_segment_hash[:user_segment_id]).first
             user_segment.update(user_segment_hash) if !user_segment.nil?
             user_segment = ZendeskGuideUserSegment.create(user_segment_hash) if user_segment.nil?
 

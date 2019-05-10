@@ -19,7 +19,7 @@ class ZendeskGuidePermissionGroup < ActiveRecord::Base
 
             permission_group_hash.symbolize_keys!
 
-            permission_group = ZendeskGuidePermissionGroup.where(permission_group_hash).first
+            permission_group = ZendeskGuidePermissionGroup.where(permission_group_id: permission_group_hash[:permission_group_id]).first
             permission_group.update(permission_group_hash) if !permission_group.nil?
             permission_group = ZendeskGuidePermissionGroup.create(permission_group_hash) if permission_group.nil?
 

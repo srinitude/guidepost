@@ -29,7 +29,7 @@ class ZendeskGuideArticle < ActiveRecord::Base
 
             article_hash.symbolize_keys!
 
-            article = ZendeskGuideArticle.where(article_hash).first
+            article = ZendeskGuideArticle.where(article_id: article_hash[:article_id]).first
             article.update(article_hash) if !article.nil?
             article = ZendeskGuideArticle.create(article_hash) if article.nil?
             

@@ -22,7 +22,7 @@ class ZendeskGuideCategory < ActiveRecord::Base
 
             category_hash.symbolize_keys!
             
-            category = ZendeskGuideCategory.where(category_hash).first
+            category = ZendeskGuideCategory.where(category_id: category_hash[:category_id]).first
             category.update(category_hash) if !category.nil?
             category = ZendeskGuideCategory.create(category_hash) if category.nil?
             
