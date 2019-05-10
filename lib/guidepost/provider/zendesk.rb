@@ -231,10 +231,9 @@ module Guidepost
             end
 
             def retrieve_article_attachments(options={})
-                byebug
                 article = options[:for_article]
 
-                url = "#{self.base_api_url}/help-center/articles/#{article["id"]}/attachments.json?per_page=25&page=1" if url.nil?
+                url = "#{self.base_api_url}/help_center/articles/#{article["id"]}/attachments.json?per_page=25&page=1" if url.nil?
                 uri = URI.parse(url)
         
                 http = Net::HTTP.new(uri.host, uri.port)
