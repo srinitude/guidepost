@@ -71,6 +71,9 @@ ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_AWS_ACCESS_KEY_ID"]
 # The secret key associated with your AWS account
 ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_AWS_SECRET_ACCESS_KEY"]
 
+# The AWS region associated with this project
+ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_AWS_REGION"]
+
 # The name of the S3 bucket you want to upload your backups to
 ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_S3_BUCKET_NAME"]
 ```
