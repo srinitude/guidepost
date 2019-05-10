@@ -4,6 +4,17 @@ class ZendeskGuideArticleAttachment < ActiveRecord::Base
     def self.find_or_create_article_attachments(options={})
         article_attachments = options[:article_attachments]
         article_objects = options[:article_objects]
+        allowed_attributes = [
+            :article_id,
+            :article_attachment_id,
+            :url,
+            :file_name,
+            :content_url,
+            :size,
+            :inline,
+            :article_attachment_created_at,
+            :article_attachment_updated_at
+        ]
 
         article_attachments.each do |aa|
             article_attachment_hash = aa.clone

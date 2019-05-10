@@ -10,6 +10,21 @@ class ZendeskGuideSection < ActiveRecord::Base
         section_objects = options[:section_objects]
         category_objects = options[:category_objects]
 
+        allowed_attributes = [
+            :category_id,
+            :section_id,
+            :name,
+            :description,
+            :locale,
+            :source_locale,
+            :url,
+            :html_url,
+            :outdated,
+            :position,
+            :section_created_at,
+            :section_updated_at
+        ]
+
         sections.each do |s|
             section_hash = s.clone
 
@@ -23,6 +38,10 @@ class ZendeskGuideSection < ActiveRecord::Base
             section_hash.delete("updated_at")
 
             section_hash.symbolize_keys!
+
+            section_hash.each_key do |k|
+                section_hash.delete(k) if !allowed_attributes.include?(k)
+            end
 
             section = ZendeskGuideSection.where(section_id: section_hash[:section_id]).first
             section.update(section_hash) if !section.nil?

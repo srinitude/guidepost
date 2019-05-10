@@ -4,6 +4,15 @@ class ZendeskGuidePermissionGroup < ActiveRecord::Base
     def self.find_or_create_permission_groups(options={})
         permission_groups = options[:permission_groups]
         permission_group_objects = options[:permission_group_objects]
+        allowed_attributes = [
+            :permission_group_id,
+            :name,
+            :edit, 
+            :publish,
+            :permission_group_created_at,
+            :permission_group_updated_at,
+            :built_in
+        ]
 
         permission_groups.each do |p|
             permission_group_hash = p.clone
@@ -18,6 +27,10 @@ class ZendeskGuidePermissionGroup < ActiveRecord::Base
             permission_group_hash.delete("updated_at")
 
             permission_group_hash.symbolize_keys!
+
+            permission_group_hash.each_key do |k|
+                permission_group_hash.delete(k) if !allowed_attributes.include?(k)
+            end
 
             permission_group = ZendeskGuidePermissionGroup.where(permission_group_id: permission_group_hash[:permission_group_id]).first
             permission_group.update(permission_group_hash) if !permission_group.nil?

@@ -14,6 +14,30 @@ class ZendeskGuideArticle < ActiveRecord::Base
         section_objects = options[:section_objects]
         user_segment_objects = options[:user_segment_objects]
         permission_group_objects = options[:permission_group_objects]
+        allowed_attributes = [
+            :section_id,
+            :article_id,
+            :url,
+            :html_url,
+            :title,
+            :body,
+            :locale,
+            :source_locale,
+            :author_id,
+            :comments_disabled, 
+            :outdated_locales,
+            :label_names,
+            :draft, 
+            :promoted, 
+            :position,
+            :vote_sum,
+            :vote_count,
+            :user_segment_id,
+            :permission_group_id,
+            :article_created_at,
+            :article_edited_at,
+            :article_updated_at
+        ]
 
         articles.each do |a|
             article_hash = a.clone
@@ -28,6 +52,10 @@ class ZendeskGuideArticle < ActiveRecord::Base
             article_hash.delete("updated_at")
 
             article_hash.symbolize_keys!
+
+            article_hash.each_key do |k|
+                article_hash.delete(k) if !allowed_attributes.include?(k)
+            end
 
             article = ZendeskGuideArticle.where(article_id: article_hash[:article_id]).first
             article.update(article_hash) if !article.nil?
