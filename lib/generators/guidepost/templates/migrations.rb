@@ -34,8 +34,8 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
             t.integer :user_segment_id, limit: 8
             t.string :name
             t.string :user_type
-            t.integer :group_ids, array: true, default: []
-            t.integer :organization_ids, array: true, default: []
+            t.integer :group_ids, array: true, default: [], limit: 8
+            t.integer :organization_ids, array: true, default: [], limit: 8
             t.string :tags, array: true, default: []
             t.timestamp :user_segment_created_at
             t.timestamp :user_segment_updated_at
@@ -44,8 +44,8 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
         create_table :zendesk_guide_permission_groups do |t|
             t.integer :permission_group_id, limit: 8
             t.string :name
-            t.integer :edit, array: true, default: []
-            t.integer :publish, array: true, default: []
+            t.integer :edit, array: true, default: [], limit: 8
+            t.integer :publish, array: true, default: [], limit: 8
             t.timestamp :permission_group_created_at
             t.timestamp :permission_group_updated_at
             t.boolean :built_in
@@ -61,7 +61,7 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
             t.string :body
             t.string :locale, null: false, default: "en-us"
             t.string :source_locale
-            t.integer :author_id
+            t.integer :author_id, limit: 8
             t.boolean :comments_disabled, default: false
             t.string :outdated_locales, array: true
             t.string :label_names, array: true, default: []
@@ -70,9 +70,9 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
             t.integer :position, default: 0
             t.integer :vote_sum
             t.integer :vote_count
-            t.integer :user_segment_id
+            t.integer :user_segment_id, limit: 8
             t.integer :zendesk_guide_user_segment_id
-            t.integer :permission_group_id
+            t.integer :permission_group_id, limit: 8
             t.integer :zendesk_guide_permission_group_id
             t.timestamp :article_created_at
             t.timestamp :article_edited_at
@@ -86,7 +86,7 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
             t.string :url
             t.string :file_name
             t.string :content_url
-            t.integer :size
+            t.integer :size, limit: 8
             t.boolean :inline, default: false
             t.timestamp :article_attachment_created_at
             t.timestamp :article_attachment_updated_at
