@@ -107,7 +107,7 @@ module Guidepost
                         sections: sections, 
                         section_count: sections.count, 
                         articles: articles,
-                        article_count: articles.count
+                        article_count: articles.count,
                         article_attachments: article_attachments,
                         article_attachment_count: article_attachments.count
                     }
