@@ -15,7 +15,7 @@ module Guidepost
             end
 
             def data_migration
-                `rake zendesk_guide:`
+                `rake zendesk_guide:import_guides_into_database`
             end
         end
 
