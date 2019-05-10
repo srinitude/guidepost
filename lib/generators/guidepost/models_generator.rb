@@ -13,7 +13,7 @@ module Guidepost
             def migrations
                 timestamp = Time.now.strftime('%Y%m%d%H%M%S')
                 template "migrations.rb", "db/migrate/#{timestamp}_create_zendesk_guide_models.rb"
-                template "data_migration.rake", "lib/tasks/zendesk_guide.rake"                
+                template "zendesk_guide.rake", "lib/tasks/zendesk_guide.rake"                
             end
 
             def models
@@ -27,20 +27,6 @@ module Guidepost
                 ]
                 model_templates.each do |t|
                     template t, "app/models/#{t}"
-                end
-            end
-
-            def tests
-                test_templates = [
-                    "zendesk_guide_category_test.rb", 
-                    "zendesk_guide_section_test.rb", 
-                    "zendesk_guide_article_test.rb",
-                    "zendesk_guide_article_attachment_test.rb",
-                    "zendesk_guide_permission_group_test.rb",
-                    "zendesk_guide_user_segment_test.rb"
-                ]
-                test_templates.each do |t|
-                    template t, "test/models/#{t}"
                 end
             end
         end
