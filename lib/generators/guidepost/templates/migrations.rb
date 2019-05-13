@@ -15,7 +15,7 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
         end
 
         create_table :zendesk_guide_sections do |t|
-            t.integer :zendesk_guide_category_id
+            t.references :zendesk_guide_category, foreign_key: true
             t.integer :category_id, limit: 8
             t.integer :section_id, limit: 8
             t.string :name, null: false, default: "General"
@@ -52,7 +52,7 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
         end
 
         create_table :zendesk_guide_articles do |t|
-            t.integer :zendesk_guide_section_id
+            t.references :zendesk_guide_section, foreign_key: true
             t.integer :section_id, limit: 8
             t.integer :article_id, limit: 8
             t.string :url
@@ -71,16 +71,16 @@ class CreateZendeskGuideModels < ActiveRecord::Migration
             t.integer :vote_sum
             t.integer :vote_count
             t.integer :user_segment_id, limit: 8
-            t.integer :zendesk_guide_user_segment_id
+            t.references :zendesk_guide_user_segment, foreign_key: true
             t.integer :permission_group_id, limit: 8
-            t.integer :zendesk_guide_permission_group_id
+            t.references :zendesk_guide_permission_group, foreign_key: true
             t.timestamp :article_created_at
             t.timestamp :article_edited_at
             t.timestamp :article_updated_at
         end
 
         create_table :zendesk_guide_article_attachments do |t|
-            t.integer :zendesk_guide_article_id
+            t.references :zendesk_guide_article, foreign_key: true
             t.integer :article_id, limit: 8
             t.integer :article_attachment_id, limit: 8
             t.string :url
