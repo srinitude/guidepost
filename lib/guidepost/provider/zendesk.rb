@@ -17,6 +17,38 @@ module Guidepost
                 @password = ENV["#{@project_name}_GUIDEPOST_ZENDESK_PASSWORD_TOKEN"]
             end
 
+            def search(options={})
+                query = options.fetch(:query, "")
+                return [] if query.empty?
+
+                url = "#{self.base_api_url}/help_center/articles/search.json?query=#{query}&per_page=5"
+                uri = URI.parse(url)
+        
+                http = Net::HTTP.new(uri.host, uri.port)
+                http.use_ssl = true
+                http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        
+                request = Net::HTTP::Get.new(uri.request_uri)
+                request.basic_auth(@email, @password)
+                response = http.request(request)
+        
+                body = response.body.force_encoding("UTF-8")
+
+                j_body = JSON.parse(body)
+                results = j_body.fetch("results", [])
+                
+                slimmed_down_results = results.map do |result|
+                    slimmed_down_result = Hash.new
+                    slimmed_down_result[:id] = result["id"]
+                    slimmed_down_result[:title] = result["title"]
+                    slimmed_down_result[:snippet] = result["snippet"]
+
+                    slimmed_down_result
+                end
+
+                slimmed_down_results
+            end
+
             def backup_all_articles(options={})
                 # Get all articles (with pagination)
                 sideload = options[:sideload] || false
