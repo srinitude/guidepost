@@ -43,6 +43,8 @@ module Guidepost
                     slimmed_down_result[:title] = result["title"]
                     slimmed_down_result[:snippet] = result["snippet"]
                 end
+
+                results
             end
 
             def backup_all_articles(options={})
