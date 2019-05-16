@@ -42,6 +42,8 @@ module Guidepost
                     slimmed_down_result[:id] = result["id"]
                     slimmed_down_result[:title] = result["title"]
                     slimmed_down_result[:snippet] = result["snippet"]
+
+                    slimmed_down_result
                 end
 
                 slimmed_down_results
