@@ -18,7 +18,7 @@ module Guidepost
             end
 
             def search(options={})
-                query = options.fetch(:query, "")
+                query = options[:query] || ""
                 return [] if query.empty?
 
                 url = "#{self.base_api_url}/help_center/articles/search.json?query=#{query}&per_page=5"
