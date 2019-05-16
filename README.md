@@ -10,6 +10,7 @@ Your knowledge base is an incredibly important component of your company, provid
 
 * [Back up your knowledge base to S3](#back-up-your-knowledge-base-to-s3)
 * [Import your knowledge base into your application](#import-your-knowledge-base-into-your-application)
+* [Search your knowledge base with keywords](#search-your-knowledge-base-with-keywords)
 
 ## Table of Contents
 
@@ -113,6 +114,22 @@ zendesk.backup_all_articles(sideload: true)
 ##### Run a script outside of your codebase
 
     $ rake zendesk_guide:import_guides_into_database[spotify,employee-portal]
+
+#### Search your knowledge base with keywords
+
+```ruby
+# The subdomain of your Zendesk account
+subdomain = "spotify"
+
+# The name you want to give to your project (name your environment variables accordingly)
+project_name = "employee-portal"
+
+# The keyword(s) you're searching for in articles
+query = "analytics"
+
+zendesk = Guidepost::Provider::Zendesk.new(subdomain: subdomain, project_name: project_name)
+zendesk.search(query: query)
+```
 
 ## Contact
 
