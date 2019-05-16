@@ -37,14 +37,14 @@ module Guidepost
                 j_body = JSON.parse(body)
                 results = j_body.fetch("results", [])
                 
-                results.map do |result|
+                slimmed_down_results = results.map do |result|
                     slimmed_down_result = Hash.new
                     slimmed_down_result[:id] = result["id"]
                     slimmed_down_result[:title] = result["title"]
                     slimmed_down_result[:snippet] = result["snippet"]
                 end
 
-                results
+                slimmed_down_results
             end
 
             def backup_all_articles(options={})
