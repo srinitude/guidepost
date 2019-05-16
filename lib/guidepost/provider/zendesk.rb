@@ -34,7 +34,15 @@ module Guidepost
         
                 body = response.body.force_encoding("UTF-8")
 
-                JSON.parse(body)
+                j_body = JSON.parse(body)
+                results = j_body.fetch("results", [])
+                
+                results.map do |result|
+                    slimmed_down_result = Hash.new
+                    slimmed_down_result[:id] = result["id"]
+                    slimmed_down_result[:title] = result["title"]
+                    slimmed_down_result[:snippet] = result["snippet"]
+                end
             end
 
             def backup_all_articles(options={})
