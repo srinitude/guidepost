@@ -21,7 +21,7 @@ module Guidepost
                 query = options.fetch(:query, "")
                 return [] if query.empty?
 
-                url = "#{self.base_api_url}/help_center/articles/search.json?query=#{query}&per_page=5"
+                url = "#{self.base_api_url}/help_center/articles/search.json?query=#{query}&per_page=10"
                 uri = URI.parse(url)
         
                 http = Net::HTTP.new(uri.host, uri.port)
