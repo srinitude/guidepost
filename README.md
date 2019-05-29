@@ -60,7 +60,7 @@ Make sure to have certain environmental variables set, preferrably in your `.bas
 ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_ZENDESK_EMAIL"]
 
 # The password token associated with your Zendesk subdomain
-ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_PASSWORD_TOKEN"]
+ENV["#{YOUR_PROJECT_NAME}_GUIDEPOST_ZENDESK_PASSWORD_TOKEN"]
 ```
 
 #### S3
