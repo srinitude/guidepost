@@ -66,16 +66,23 @@ module Guidepost
         
             def retrieve_all_articles(options={})
                 sideload = options[:sideload] || false
+                all_locales = options[:all_locales] || false
+
                 page_next = nil
                 articles = []
                 article_attachments = nil
 
+                locales = (self.retrieve_all_locales || []).map{|locale_json| locale_json['locale'] } if all_locales
+                locales = [''] if locales.nil? || locales.empty?
+
                 if !sideload
-                    while true
-                        page_articles, page_next = self.retrieve_articles(url: page_next)
-                        break if page_articles.nil? || page_articles.empty?
-                        articles += page_articles
-                        break if page_next.nil?
+                    locales.each do |locale|
+                        while true
+                            page_articles, page_next = self.retrieve_articles(url: page_next, locale: locale)
+                            break if page_articles.nil? || page_articles.empty?
+                            articles += page_articles
+                            break if page_next.nil?
+                        end
                     end
 
                     article_attachments = self.retrieve_all_article_attachments(articles: articles)
@@ -93,42 +100,44 @@ module Guidepost
                     section_urls = Hash.new
                     category_urls = Hash.new
 
-                    while true
-                        page, page_next = self.retrieve_articles(url: page_next, sideload: true)
+                    locales.each do |locale|
+                        while true
+                            page, page_next = self.retrieve_articles(url: page_next, sideload: true, locale: locale)
 
-                        articles_from_page = page["articles"]
-                        sections_from_page = page["sections"]
-                        categories_from_page = page["categories"]
+                            articles_from_page = page["articles"]
+                            sections_from_page = page["sections"]
+                            categories_from_page = page["categories"]
 
-                        no_more_articles = articles_from_page.nil? || articles_from_page.empty?
-                        no_more_sections = sections_from_page.nil? || sections_from_page.empty?
-                        no_more_categories = categories_from_page.nil? || categories_from_page.empty?
+                            no_more_articles = articles_from_page.nil? || articles_from_page.empty?
+                            no_more_sections = sections_from_page.nil? || sections_from_page.empty?
+                            no_more_categories = categories_from_page.nil? || categories_from_page.empty?
 
-                        break if no_more_articles && no_more_sections && no_more_categories
+                            break if no_more_articles && no_more_sections && no_more_categories
 
-                        articles += articles_from_page
+                            articles += articles_from_page
 
-                        sections_from_page.each do |s|
-                            url = s["url"]
-                            if !section_urls.has_key?(url)
-                                section_urls[url] = 1
-                            else
-                                section_urls[url] += 1
+                            sections_from_page.each do |s|
+                                url = s["url"]
+                                if !section_urls.has_key?(url)
+                                    section_urls[url] = 1
+                                else
+                                    section_urls[url] += 1
+                                end
+                                sections << s if section_urls[url] == 1
                             end
-                            sections << s if section_urls[url] == 1
-                        end
 
-                        categories_from_page.each do |c|
-                            url = c["url"]
-                            if !category_urls.has_key?(url)
-                                category_urls[url] = 1
-                            else
-                                category_urls[url] += 1
+                            categories_from_page.each do |c|
+                                url = c["url"]
+                                if !category_urls.has_key?(url)
+                                    category_urls[url] = 1
+                                else
+                                    category_urls[url] += 1
+                                end
+                                categories << c if category_urls[url] == 1
                             end
-                            categories << c if category_urls[url] == 1
-                        end
 
-                        break if page_next.nil?
+                            break if page_next.nil?
+                        end
                     end
 
                     article_attachments = self.retrieve_all_article_attachments(articles: articles)
@@ -148,12 +157,13 @@ module Guidepost
         
             def retrieve_articles(options={})
                 url = options[:url]
+                locale = options[:locale] || ""
                 sideload = options[:sideload] || false
 
                 if !sideload
-                    url = "#{self.base_api_url}/help_center/articles.json?per_page=25&page=1" if url.nil?
+                    url = "#{self.base_api_url}/help_center/#{locale}/articles.json?per_page=25&page=1" if url.nil?
                 else
-                    url = "#{self.base_api_url}/help_center/articles.json?include=sections,categories&per_page=25&page=1" if url.nil?
+                    url = "#{self.base_api_url}/help_center/#{locale}/articles.json?include=sections,categories&per_page=25&page=1" if url.nil?
                 end
                 
                 uri = URI.parse(url)
@@ -252,7 +262,7 @@ module Guidepost
                 articles = options[:articles]
                 articles.each do |article|
                     while true
-                        attachments, next_page = self.retrieve_article_attachments(for_article: article)
+                        attachments, next_page = self.retrieve_article_attachments(for_article: article, url: next_page)
                         break if attachments.nil? || attachments.empty?
                         article_attachments += attachments
                         break if next_page.nil?
@@ -263,6 +273,7 @@ module Guidepost
             end
 
             def retrieve_article_attachments(options={})
+                url = options[:url]
                 article = options[:for_article]
 
                 url = "#{self.base_api_url}/help_center/articles/#{article["id"]}/attachments.json?per_page=25&page=1" if url.nil?
@@ -282,6 +293,42 @@ module Guidepost
 
                 return j_body["article_attachments"], j_body["next_page"]
             end
+
+            def retrieve_all_locales(options={})
+                locales = []
+                next_page = nil
+
+                while true
+                    tmp_locales, next_page = self.retrieve_locales(url: next_page)
+                    break if tmp_locales.nil? || tmp_locales.empty?
+                    locales += tmp_locales
+                    break if next_page.nil?
+                end
+
+                locales
+            end
+
+            def retrieve_locales(options={})
+                url = options[:url]
+
+                url = "#{self.base_api_url}/locales.json" if url.nil?
+                uri = URI.parse(url)
+        
+                http = Net::HTTP.new(uri.host, uri.port)
+                http.use_ssl = true
+                http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        
+                request = Net::HTTP::Get.new(uri.request_uri)
+                request.basic_auth(@email, @password)
+                response = http.request(request)
+        
+                body = response.body.force_encoding("UTF-8")
+
+                j_body = JSON.parse(body)
+
+                return j_body["locales"], j_body["next_page"]
+            end
+
 
             def base_api_url
                 "https://#{self.subdomain}.zendesk.com/api/v2"
