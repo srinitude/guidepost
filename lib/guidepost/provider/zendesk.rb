@@ -52,7 +52,7 @@ module Guidepost
             def backup_all_articles(options={})
                 # Get all articles (with pagination)
                 sideload = options[:sideload] || false
-                articles = self.retrieve_all_articles(sideload: sideload)
+                articles = self.retrieve_all_articles(sideload: sideload, all_locales: options[:all_locales])
         
                 # Upload to S3
                 timestamp = Time.now.strftime('%Y%m%d%H%M%S')
