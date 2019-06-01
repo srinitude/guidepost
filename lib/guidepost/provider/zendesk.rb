@@ -85,6 +85,17 @@ module Guidepost
                         end
                     end
 
+                    if all_locales
+                        final_articles = []
+                        articles.each do |article|
+                            article_translations = self.retrieve_all_translations(for_article: article)
+                            (article_translations || [article]).each do |article_translation|
+                                final_articles << article.merge(article_translation)
+                            end
+                        end
+                        articles = final_articles
+                    end
+
                     article_attachments = self.retrieve_all_article_attachments(articles: articles)
 
                     return {
@@ -138,6 +149,17 @@ module Guidepost
 
                             break if page_next.nil?
                         end
+                    end
+
+                    if all_locales
+                        final_articles = []
+                        articles.each do |article|
+                            article_translations = self.retrieve_all_translations(for_article: article)
+                            (article_translations || [article]).each do |article_translation|
+                                final_articles << article.merge(article_translation)
+                            end
+                        end
+                        articles = final_articles
                     end
 
                     article_attachments = self.retrieve_all_article_attachments(articles: articles)
@@ -327,6 +349,44 @@ module Guidepost
                 j_body = JSON.parse(body)
 
                 return j_body["locales"], j_body["next_page"]
+            end
+
+
+            def retrieve_all_translations(options={})
+                translations = []
+                next_page = nil
+                article = options[:for_article]
+
+                while true
+                    tmp_translations, next_page = self.retrieve_translations(url: next_page, for_article: article)
+                    break if tmp_translations.nil? || tmp_translations.empty?
+                    translations += tmp_translations
+                    break if next_page.nil?
+                end
+
+                translations
+            end
+
+            def retrieve_translations(options={})
+                url = options[:url]
+                article = options[:for_article]
+
+                url = "#{self.base_api_url}/articles/#{article['id']}/translations.json" if url.nil?
+                uri = URI.parse(url)
+        
+                http = Net::HTTP.new(uri.host, uri.port)
+                http.use_ssl = true
+                http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        
+                request = Net::HTTP::Get.new(uri.request_uri)
+                request.basic_auth(@email, @password)
+                response = http.request(request)
+        
+                body = response.body.force_encoding("UTF-8")
+
+                j_body = JSON.parse(body)
+
+                return j_body["translations"], j_body["next_page"]
             end
 
 
