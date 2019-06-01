@@ -89,7 +89,8 @@ module Guidepost
                         final_articles = []
                         articles.each do |article|
                             article_translations = self.retrieve_all_translations(for_article: article)
-                            (article_translations || [article]).each do |article_translation|
+                            article_translations = [article] if article_translations.nil? || article_translations.empty?
+                            article_translations.each do |article_translation|
                                 final_articles << article.merge(article_translation)
                             end
                         end
@@ -371,7 +372,7 @@ module Guidepost
                 url = options[:url]
                 article = options[:for_article]
 
-                url = "#{self.base_api_url}/articles/#{article['id']}/translations.json" if url.nil?
+                url = "#{self.base_api_url}/help_center/articles/#{article['id']}/translations.json" if url.nil?
                 uri = URI.parse(url)
         
                 http = Net::HTTP.new(uri.host, uri.port)
