@@ -52,7 +52,8 @@ module Guidepost
             def backup_all_articles(options={})
                 # Get all articles (with pagination)
                 sideload = options[:sideload] || false
-                articles = self.retrieve_all_articles(sideload: sideload, all_locales: options[:all_locales])
+                all_locales = options[:all_locales] || true
+                articles = self.retrieve_all_articles(sideload: sideload, all_locales: all_locales)
         
                 # Upload to S3
                 timestamp = Time.now.strftime('%Y%m%d%H%M%S')
@@ -66,7 +67,7 @@ module Guidepost
         
             def retrieve_all_articles(options={})
                 sideload = options[:sideload] || false
-                all_locales = options[:all_locales] || false
+                all_locales = options[:all_locales] || true
 
                 page_next = nil
                 articles = []
@@ -86,18 +87,6 @@ module Guidepost
                         end
                     end
 
-                    if all_locales
-                        final_articles = []
-                        articles.each do |article|
-                            article_translations = self.retrieve_all_translations(for_article: article)
-                            article_translations = [article] if article_translations.nil? || article_translations.empty?
-                            article_translations.each do |article_translation|
-                                final_articles << article.merge(article_translation)
-                            end
-                        end
-                        articles = final_articles
-                    end
-
                     article_attachments = self.retrieve_all_article_attachments(articles: articles)
 
                     return {
@@ -114,6 +103,7 @@ module Guidepost
                     category_urls = Hash.new
 
                     locales.each do |locale|
+                        page_next = nil
                         while true
                             page, page_next = self.retrieve_articles(url: page_next, sideload: true, locale: locale)
 
@@ -151,17 +141,6 @@ module Guidepost
 
                             break if page_next.nil?
                         end
-                    end
-
-                    if all_locales
-                        final_articles = []
-                        articles.each do |article|
-                            article_translations = self.retrieve_all_translations(for_article: article)
-                            (article_translations || [article]).each do |article_translation|
-                                final_articles << article.merge(article_translation)
-                            end
-                        end
-                        articles = final_articles
                     end
 
                     article_attachments = self.retrieve_all_article_attachments(articles: articles)
