@@ -77,6 +77,7 @@ module Guidepost
 
                 if !sideload
                     locales.each do |locale|
+                        page_next = nil
                         while true
                             page_articles, page_next = self.retrieve_articles(url: page_next, locale: locale)
                             break if page_articles.nil? || page_articles.empty?
@@ -180,7 +181,7 @@ module Guidepost
         
             def retrieve_articles(options={})
                 url = options[:url]
-                locale = options[:locale] || ""
+                locale = (options[:locale] || "").downcase
                 sideload = options[:sideload] || false
 
                 if !sideload
