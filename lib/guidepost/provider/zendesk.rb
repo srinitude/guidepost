@@ -101,6 +101,7 @@ module Guidepost
                 else
                     sections = []
                     categories = []
+                    article_attachments = []
 
                     section_urls = Hash.new
                     category_urls = Hash.new
