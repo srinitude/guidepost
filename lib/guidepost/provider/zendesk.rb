@@ -22,6 +22,7 @@ module Guidepost
                 return [] if query.empty?
 
                 url = "#{self.base_api_url}/help_center/articles/search.json?query=#{query}&per_page=10"
+                url += "&locale=#{options[:locale]}" if !options[:locale].nil? && !options[:locale].empty?
                 uri = URI.parse(url)
         
                 http = Net::HTTP.new(uri.host, uri.port)
