@@ -77,17 +77,20 @@ module Guidepost
                 locales = [''] if locales.nil? || locales.empty?
 
                 if !sideload
+                    article_attachments = []
                     locales.each do |locale|
                         page_next = nil
+                        locale_articles = []
                         while true
                             page_articles, page_next = self.retrieve_articles(url: page_next, locale: locale)
                             break if page_articles.nil? || page_articles.empty?
-                            articles += page_articles
+                            locale_articles += page_articles
                             break if page_next.nil?
                         end
-                    end
+                        articles += locale_articles
 
-                    article_attachments = self.retrieve_all_article_attachments(articles: articles)
+                        article_attachments += self.retrieve_all_article_attachments(articles: locale_articles, locale: locale)
+                    end
 
                     return {
                         articles: articles,
@@ -104,6 +107,8 @@ module Guidepost
 
                     locales.each do |locale|
                         page_next = nil
+                        locales_articles = []
+
                         while true
                             page, page_next = self.retrieve_articles(url: page_next, sideload: true, locale: locale)
 
@@ -117,7 +122,7 @@ module Guidepost
 
                             break if no_more_articles && no_more_sections && no_more_categories
 
-                            articles += articles_from_page
+                            locales_articles += articles_from_page
 
                             sections_from_page.each do |s|
                                 url = s["url"]
@@ -141,9 +146,10 @@ module Guidepost
 
                             break if page_next.nil?
                         end
+                        articles += locales_articles
+                        
+                        article_attachments += self.retrieve_all_article_attachments(articles: locales_articles, locale: locale)
                     end
-
-                    article_attachments = self.retrieve_all_article_attachments(articles: articles)
 
                     return { 
                         categories: categories, 
@@ -265,7 +271,7 @@ module Guidepost
                 articles = options[:articles]
                 articles.each do |article|
                     while true
-                        attachments, next_page = self.retrieve_article_attachments(for_article: article, url: next_page)
+                        attachments, next_page = self.retrieve_article_attachments(for_article: article, url: next_page, locale: options[:locale])
                         break if attachments.nil? || attachments.empty?
                         article_attachments += attachments
                         break if next_page.nil?
@@ -278,8 +284,9 @@ module Guidepost
             def retrieve_article_attachments(options={})
                 url = options[:url]
                 article = options[:for_article]
+                locale = (options[:locale] || "").downcase
 
-                url = "#{self.base_api_url}/help_center/articles/#{article["id"]}/attachments.json?per_page=25&page=1" if url.nil?
+                url = "#{self.base_api_url}/help_center/#{locale}/articles/#{article["id"]}/attachments.json?per_page=25&page=1" if url.nil?
                 uri = URI.parse(url)
         
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -332,7 +339,6 @@ module Guidepost
                 return j_body["locales"], j_body["next_page"]
             end
 
-
             def retrieve_all_translations(options={})
                 translations = []
                 next_page = nil
@@ -369,7 +375,6 @@ module Guidepost
 
                 return j_body["translations"], j_body["next_page"]
             end
-
 
             def base_api_url
                 "https://#{self.subdomain}.zendesk.com/api/v2"
