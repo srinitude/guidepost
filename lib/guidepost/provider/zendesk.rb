@@ -1,6 +1,8 @@
 module Guidepost
     module Provider
         class Zendesk
+            require 'uri'
+
             attr_reader :subdomain
             attr_reader :project_name
 
@@ -21,7 +23,7 @@ module Guidepost
                 query = options.fetch(:query, "")
                 return [] if query.empty?
 
-                url = "#{self.base_api_url}/help_center/articles/search.json?query=#{query}&per_page=10"
+                url = "#{self.base_api_url}/help_center/articles/search.json?query=#{URI::encode(query)}&per_page=10"
                 url += "&locale=#{options[:locale]}" if !options[:locale].nil? && !options[:locale].empty?
                 uri = URI.parse(url)
         
