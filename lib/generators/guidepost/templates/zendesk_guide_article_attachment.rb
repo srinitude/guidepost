@@ -37,7 +37,7 @@ class ZendeskGuideArticleAttachment < ActiveRecord::Base
             article_objects.each do |a|
                 is_correct_article = (article_attachment.article_id == a.article_id)
                 if is_correct_article
-                    article_attachment.zendesk_guide_article = co
+                    article_attachment.zendesk_guide_article = a
                     article_attachment.save
                     break
                 end

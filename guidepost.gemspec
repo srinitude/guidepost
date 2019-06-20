@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name                  = 'guidepost'
-    s.version               = '0.2.5'
+    s.version               = '0.2.6'
     s.homepage              = "https://github.com/srinitude/guidepost"
     s.summary               = "Harness your knowledge base in your Rails applications"
     s.description           = "Harness your knowledge base in your Rails applications"
