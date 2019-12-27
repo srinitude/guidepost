@@ -63,7 +63,7 @@ module Guidepost
 
                 filename = "#{timestamp}"
                 filename += "_with_sideload" if sideload
-                @storage.upload_file(path: "zendesk/article_backups/#{filename}.json", string_content: articles.to_json)
+                @storage.upload_file(path: "zendesk/#{@subdomain}/article_backups/#{filename}.json", string_content: articles.to_json)
         
                 articles.count
             end
