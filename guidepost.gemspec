@@ -11,5 +11,5 @@ Gem::Specification.new do |s|
     s.required_ruby_version = '>= 2.5.0'
     s.licenses              = ["MIT"]
 
-    s.add_dependency("aws-sdk", "~> 2.0")
+    s.add_dependency("aws-sdk-s3", "~> 1")
 end
